@@ -1,0 +1,112 @@
+# Project: lib13
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+RES      = lib13_private.res
+OBJ      = acc13.o aes.o arg13.o base64.o const13.o crypt13.o day13.o db13.o des.o error13.o hash13.o io13.o io13i.o lib13.o lock13.o mem13.o num2text.o obj13.o pack13.o path13.o rand13.o rc4.o rr13.o sha256.o str13.o xtea.o include/pack13i.o $(RES)
+LINKOBJ  = acc13.o aes.o arg13.o base64.o const13.o crypt13.o day13.o db13.o des.o error13.o hash13.o io13.o io13i.o lib13.o lock13.o mem13.o num2text.o obj13.o pack13.o path13.o rand13.o rc4.o rr13.o sha256.o str13.o xtea.o include/pack13i.o $(RES)
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc ../libntru/release.dev/libntru.lib ../sqlite/libsqlite.a -g3
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+BIN      = lib13.a
+CXXFLAGS = $(CXXINCS) -std=c99 -g3
+CFLAGS   = $(INCS) -std=c99 -g3
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(LINKOBJ)
+	ar r $(BIN) $(LINKOBJ)
+	ranlib $(BIN)
+
+acc13.o: acc13.c
+	$(CC) -c acc13.c -o acc13.o $(CFLAGS)
+
+aes.o: aes.c
+	$(CC) -c aes.c -o aes.o $(CFLAGS)
+
+arg13.o: arg13.c
+	$(CC) -c arg13.c -o arg13.o $(CFLAGS)
+
+base64.o: base64.c
+	$(CC) -c base64.c -o base64.o $(CFLAGS)
+
+const13.o: const13.c
+	$(CC) -c const13.c -o const13.o $(CFLAGS)
+
+crypt13.o: crypt13.c
+	$(CC) -c crypt13.c -o crypt13.o $(CFLAGS)
+
+day13.o: day13.c
+	$(CC) -c day13.c -o day13.o $(CFLAGS)
+
+db13.o: db13.c
+	$(CC) -c db13.c -o db13.o $(CFLAGS)
+
+des.o: des.c
+	$(CC) -c des.c -o des.o $(CFLAGS)
+
+error13.o: error13.c
+	$(CC) -c error13.c -o error13.o $(CFLAGS)
+
+hash13.o: hash13.c
+	$(CC) -c hash13.c -o hash13.o $(CFLAGS)
+
+io13.o: io13.c
+	$(CC) -c io13.c -o io13.o $(CFLAGS)
+
+io13i.o: io13i.c
+	$(CC) -c io13i.c -o io13i.o $(CFLAGS)
+
+lib13.o: lib13.c
+	$(CC) -c lib13.c -o lib13.o $(CFLAGS)
+
+lock13.o: lock13.c
+	$(CC) -c lock13.c -o lock13.o $(CFLAGS)
+
+mem13.o: mem13.c
+	$(CC) -c mem13.c -o mem13.o $(CFLAGS)
+
+num2text.o: num2text.c
+	$(CC) -c num2text.c -o num2text.o $(CFLAGS)
+
+obj13.o: obj13.c
+	$(CC) -c obj13.c -o obj13.o $(CFLAGS)
+
+pack13.o: pack13.c
+	$(CC) -c pack13.c -o pack13.o $(CFLAGS)
+
+path13.o: path13.c
+	$(CC) -c path13.c -o path13.o $(CFLAGS)
+
+rand13.o: rand13.c
+	$(CC) -c rand13.c -o rand13.o $(CFLAGS)
+
+rc4.o: rc4.c
+	$(CC) -c rc4.c -o rc4.o $(CFLAGS)
+
+rr13.o: rr13.c
+	$(CC) -c rr13.c -o rr13.o $(CFLAGS)
+
+sha256.o: sha256.c
+	$(CC) -c sha256.c -o sha256.o $(CFLAGS)
+
+str13.o: str13.c
+	$(CC) -c str13.c -o str13.o $(CFLAGS)
+
+xtea.o: xtea.c
+	$(CC) -c xtea.c -o xtea.o $(CFLAGS)
+
+include/pack13i.o: include/pack13i.c
+	$(CC) -c include/pack13i.c -o include/pack13i.o $(CFLAGS)
+
+lib13_private.res: lib13_private.rc 
+	$(WINDRES) -i lib13_private.rc --input-format=rc -o lib13_private.res -O coff 
+

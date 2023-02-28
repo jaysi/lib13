@@ -1,0 +1,288 @@
+﻿TODO:
+    - split internal/external items to separated headers.
+
+lib13::includes:
+	bit,
+	const,
+	type,
+	pack,
+	error,
+	debug,
+	csv,
+	db,
+	hash,
+	io,
+	mem,
+	path,
+	rr,
+	str,
+	thread,
+	day,
+	crypt [TODO, c13_*],
+	infolink [TODO, i13_*],
+	net [TODO, n13*_];
+
+lib13::internal_depency_list:
+	bit - N/A,
+	type - N/A,
+	const - type,
+	pack - [TODO],
+	error - bit + type + const,
+	debug - N/A,
+	csv - [TODO],
+	db - [TODO],
+	hash - [TODO],
+	io - N/A [TODO: must use error13],
+	mem - type + const + error,
+	path - N/A [TODO: must use error13],
+	rr - type + error + thread + mem,
+	str - N/A,
+	thread - N/A,
+	day - error,
+	crypt - [TODO],
+	infolink - [TODO],
+	net - [TODO];
+	
+lib13::bit:	header only;	    macros to use in bitwise operations, bitmap
+				    (bitstring) operations supported;
+	DONE:	bit/bitmap ops;
+	TODO:	bitmap search;
+	EXP:	BITOFF [M],
+		BITON [M],
+		BITFLIP [M],
+		ISBIT [M],
+		BITSTATSTR [M],
+		BITMAPSIZE [M],
+		BITMAPOFF [M],
+		BITMAPON [M],
+		BITMAPFLIP [M],
+		ISBITMAP [M],
+		BITMAPBUF [M];
+
+lib13::type:	header only;	    defines types used in lib13;	
+	DONE:	(unsigned)int8/16/32/64
+	EXP:	N/A;
+
+lib13::const:	header and source;  defines public constant values of lib13;
+	DONE:	magic, source definition;
+	EXP:	N/A;				
+
+lib13::debug:	header only;	    printf like functions for output debug
+				    messages, may replace by error engine;
+	EXP:	_DebugMsg [M];
+
+lib13::error:	header and source;  error handler of lib13;
+	DONE:	init/destroy/cleanup, subsystem tracking, internal/external
+		error string, warning list, struct copy, error msg/code return;
+	TODO:	error level;
+	EXP:	ListOfErrors [C, E13_*],
+		E13_DEF_WARN [C],
+		E13_DEF_ESTR [C],
+		struct e13 [S],
+		e13_init [F],
+		e13_uerror [M],
+		e13_ierror [M],
+		e13_warn [M],
+		e13_errcode [F],
+		e13_errmsg [F],
+		e13_warnmsg [F],
+		e13_code_msg [F],
+		e13_cleanup [F],
+		e13_destroy [F],
+		e13_copy [F],
+		e13_error [M],
+		e13_uerrmsg [M];
+	
+lib13::pack:	header and source;  provides packing for data over network or disk;
+	EXP:	pack754 [F],
+		unpack754 [F],
+		packi16 [iF],
+		packi32 [iF],
+		packi64 [iF],
+		unpacki16 [iF],
+		unpacki32 [iF],
+		unpacki64 [iF],
+		pack [F],
+		unpack [F];
+
+lib13::mem:	header and source;  memmory manager;
+	DONE:	replacement macros for malloc/free, 2d array malloc/free,
+		mempool init/destroy/malloc/free/find, improved memmem;
+	EXP:	MEM13_STATIC [C],
+		MEM13_DYNAMIC [C],
+		MEM13_EXPANDING [C],
+		MEM13_AUTOSIZE [C],
+		MEM13_DEF_POLICY [C],
+		MEM13_DEF_FLAGS [C],
+		MEM13_DEF_BUCK [C],
+		struct m13_mempool [S],
+		memmem [F],
+		m13_pool_init [F],
+		m13_pool_destroy [F],
+		m13_pool_alloc [F],
+		m13_pool_free [F],
+		m13_pool_find [F],
+		m13_pool_set [F],
+		m13_pool_expand [M],
+		m13_pool_shrink [M],
+		m13_pool_buf [M],
+		m13_realloc [M],
+		m13_malloc [M],
+		m13_free [M],
+		m13_malloc_2d [F],
+		m13_free_2d [M];
+
+lib13::io:	header and source;  low level io;
+	DONE:	hard_read/write, copy_file;
+	TODO:	may provide threaded io in future;
+	EXP:	MAXCOPYFILEBUFSIZE [C],
+		io13_read [F],
+		io13_write [F],
+		io13_copy_file [F],
+		io13_copy_file2 [F],
+		io13_isdir [F],
+		io13_isfile [F],
+		io13_get_name [F];
+	
+lib13::rr:	header and source;  threaded request/reply/callback framework
+	DONE:	init/destroy, copy/free request,
+		register/wait/checkout/cancel/pause/resume, callback, mempool,
+		alloc/free reply;
+	EXP:	RR13_REQ_FREE [C],
+		RR13_REQ_COPY [C],
+		RR13_REQ_SHUTDOWN [C],
+		RR13_REQ_EXIT [C],
+		struct rr13_request [S],
+		RR13_NEED_REPLY [C],
+		RR13_REPLY_WAKEUP [C],
+		RR13_REPLY_EXIT [C],
+		struct rr13_reply [S],
+		RR13_MEMPOOL [C],
+		RR13_REPLY [C],
+		RR13_NO_NEW_REQ [C],
+		RR13_PAUSE [C],
+		RR13_RESUME [C],
+		RR13_INIT_FLAGS [C],
+		struct rr13 [S],
+		rr13_init [F],
+		rr13_destroy [F],
+		rr13_reg [F],
+		rr13_checkout [F],
+		rr13_wait [F],
+		rr13_cancel [F],
+		rr13_set_proc_flag [F],
+		rr13_pause [F],
+		rr13_resume [F],
+		rr13_standby [F],
+		rr13_continue [F],
+		rr13_alloc_request [F],
+		rr13_free_request [F],
+		rr13_alloc_reply [F],
+		rr13_free_reply [F];
+				
+
+lib13::path:	header and source;  portable path handler;
+	DONE:	join/merge, create_tree, path_depth, unix_path;
+	TODO:	return different parts of path by level;
+	EXP:	P13_TYPE_DIR [C],
+		P13_TYPE_FILE [C],
+		P13_TYPE_UNKNOWN [C],
+		MAXPATHNAME [C, ifndef],
+		struct path13_entry [S],
+		p13_type_str [M],
+		p13_create_dir_struct [F],
+		p13_get_unix_path [F],
+		p13_get_abs_path [F],
+		p13_join_path [F],
+		p13_merge_path [F],
+		p13_get_path_depth [F],
+		p13_is_abs_path [F],
+		p13_get_filename [F],
+		p13_cut_from_start [F],
+		p13_merge_path2 [M],
+		alphasort [F, WIN32],
+		scandir [F, WIN32];
+	
+lib13::str:	header and source;  string operations
+	DONE:	comma separated string explode/search/join/copy/array,
+		wild_carded search, secure len/copy/cat + W versions;
+	EXP:	s13_exparts [F],
+		s13_explode [F],
+		s13_prepare_exparts [F],
+		s13_find_expart [F],
+		s13_merge_exparts [F],
+		s13_join_array [F],
+		s13_copy_array [F],
+		s13_exmem [M],
+		s13_free_exmem [M],
+		s13_strlen [F],
+		s13_wcslen [F],
+		s13_strcpy [F],
+		s13_strcat [F],
+		s13_wcscpy [F],
+		s13_wcscat [F],
+		s13_wildcmp [F];
+
+lib13::thread:	header only;	wrapper around pthreads;
+	TODO:	economic locking mechanism;
+	EXP:	th13_t [T],
+		th13_mutex_t [T],
+		th13_mutexattr_t [T],
+		th13_cond_t [T],
+		th13_sem_t [T],
+		th13_mutexattr_init [M],
+		th13_mutexattr_destroy [M],
+		TH13_MUTEX_INITIALIZER [C],
+		th13_mutex_init [M],
+		th13_mutex_destroy [M],
+		th13_mutex_lock [M],
+		th13_mutex_unlock [M],
+		th13_mutex_trylock [M],
+		th13_sem_init [M],
+		th13_sem_destroy [M],
+		th13_sem_post [M],
+		th13_sem_wait [M],
+		th13_cond_init [M],
+		th13_cond_destroy [M],
+		th13_cond_signal [M],
+		th13_cond_wait [M],
+		th13_create [M],
+		th13_detach [M],
+		th13_join [M],
+		th13_cancel [M];
+
+lib13::hash:	header and source;  hash/secure hash support;
+	EXP:	hash13_md5_file [F, TODO];
+
+lib13::csv:	header and source;  support for normal/lib13 spec csv files;
+	TODO:	tables/rows;
+
+lib13::db:	header and source;  database vm;
+	TODO:	tables/rows/columns/data_types/transactions;
+	
+lib13::day:	header and source;  date/time handler;
+	DONE:	hijri/georjian conversion, formatting, search, wild_carded compare;
+	EXP:	D13_ITEMS [C],
+		MAXTIME [C],
+		d13_g2j [F],
+		d13_j2g [F],
+		d13_today [F],
+		d13_now [F],
+		d13_time13 [F],
+		d13_cmp_time13 [F, TODO];
+				
+lib13::crypt:	header and source;  encryption support;
+
+lib13::infolink: header and source; transport layer for network;
+
+lib13::net:	header and source; modular network manager;
+
+
+this::legend:
+    [C] - Constant;
+    [M] - Macro;
+    [F] - Function;
+    [S] - Struct;
+    [E] - Enum;
+    [iF]- Inline Function;
+    [T] - Typedef;
