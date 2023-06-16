@@ -52,5 +52,6 @@ typedef aclid13_t gid13_t;
 typedef aclid13_t uid13_t;
 typedef uint32_t regid_t;
 typedef uint16_t acc_perm_t;
+typedef error13_t e13_t;
 
 #endif // TYPE13_H

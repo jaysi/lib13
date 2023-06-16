@@ -1,61 +1,49 @@
-﻿DEBUGFLAGS13 = -O -g
-#DEBUGFLAGS13 = -O2 -DNDEBUG
-INCLUDE13 = ./include
-CFLAGS = -Winline -Wall -c -fPIC -I$(INCLUDE13)
-OBJ = acc13.o \
-		aes.o \
-		arg13.o \
-		base64.o \
-		const13.o \
-		crypt13.o \
-		day13.o \
-		db13.o \
-		des.o \
-		error13.o \
-		hash13.o \
-		io13.o \
-		io13i.o \
-		lib13.o \
-		lock13.o \
-		mem13.o \
-		num2text.o \
-		obj13.o \
-		pack13.o \
-		path13.o \
-		rand13.o \
-		rc4.o \
-		rr13.o \
-		sha256.o \
-		str13.o \
-		xtea.o
+﻿INCLUDE_PATH = $(HOME)/prj/lib13/include
+LIB_PATH = 
+CFLAGS = -Winline -Wall -fPIC -I$(INCLUDE_PATH)
+debug: CFLAGS += -O -g
+release: CFLAGS += -O2 -DNDEBUG
+OUTDIR = debug/
+release: OUTDIR = release/
 
-SRC = *.c
+SRC = $(wildcard *.c)
+OBJ = $(SRC:%.c=%.o)
 
-CFLAGS += $(DEBUGFLAGS13)
-LIB = lib13.so
-IF =
-EXTERN = ../sqlite/sqlite3.o ../libntru/libntru.a
-TOLINK = -lpthread
+EXTERNLIBS = $(HOME)/prj/sqlite/sqlite3.o $(HOME)/prj/libntru/libntru.a
+LINKLIBS = -lpthread
 
-all: dynamic static
+MV = mv
+RM = rm
+MKDIR = mkdir
+AR = ar -crs
+TAR = tar
+ZIP = bzip2
 
-dynamic: $(OBJ)
-	$(CC) --shared $(TOLINK) -o $(LIB) $(OBJ) $(EXTERN)
+all: debug
 
-static: $(OBJ)
-	ar -crs lib13.a $(OBJ) $(EXTERN)	
+release: $(OBJ)
+	$(CC) --shared $(CFLAGS) $(LINKSLIBS) -o lib13.so $< $(EXTERNLIBS)
+	$(AR) lib13.a $< $(EXTERNLIBS)
+	@$(MV) lib13.so lib13.a $(OUTDIR)
+	@$(MV) *.o obj/
+	$(info *** put libs in release/ ; 'make clean' before 'make debug' ***)
 
-cleanall: clean cleanbak
-	@rm -f $(LIB)
+debug: $(OBJ)
+	$(CC) --shared $(CFLAGS) $(LINKSLIBS) -o lib13.so $< $(EXTERNLIBS)
+	$(AR) lib13.a $< $(EXTERNLIBS)
+	@$(MV) lib13.so lib13.a $(OUTDIR)
+	@$(MV) *.o obj/
+	$(info *** put libs in debug/ ; 'make clean' before 'make release' ***)
+	
+cleanall: clean
+	@$(RM) release/* debug/*
 
 clean:
-	@rm -f $(OBJ)	
-
-cleanbak:
-	@rm -f *.c~
-	@rm -f Makefile~ makefile~
+	@$(RM) -f *.o obj/* *.*~ *~
 
 backup:
-	@tar -cf lib13.tar *.c makefile include/
-	@bzip2 lib13.tar
+	@$(TAR) -cf lib13.tar *.c makefile include/
+	@$(ZIP) lib13.tar
 
+init:
+	$(MKDIR) release debug obj
