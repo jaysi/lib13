@@ -24,28 +24,28 @@ static char _Debug13Buf[_DEBUG13_MAX_STR];
 #else
 */
 
-#define _DebugMsg(fmt, args... )    MACRO( fprintf(stderr, "dbg{%s:%s:%i# ", __FILE__, __func__, __LINE__);\
-                                    fprintf(stderr, fmt, ## args);\
+#define _DebugMsg(fmt, ... )    MACRO( fprintf(stderr, "dbg{%s:%s:%i# ", __FILE__, __func__, __LINE__);\
+                                    fprintf(stderr, fmt, ##);\
                                     fprintf(stderr, " }dbg;\n"); )
 //#endif
-#define _DebMsgL(level, fmt, args... )  MACRO( if(level >= DEBUGLEVEL){\
-                                                _DebugMsg(fmt, ## args);} )
+#define _DebMsgL(level, fmt, ... )  MACRO( if(level >= DEBUGLEVEL){\
+                                                _DebugMsg(fmt, ##);} )
 #define _AssertMacro(if_bool)   MACRO( if(!(if_bool)){_DebugMsg("### ASSERT FAILED!!! ANY KEY TO CONTINUE. ###");getch();} )
 #define _GetKey()   MACRO( getch(); )
 #else
 
-#define _DebugMsg(fmt, args... )
-#define _DebMsgL(level, fmt, args... )
+#define _DebugMsg(fmt, ... )
+#define _DebMsgL(level, fmt, ... )
 #define _AssertMacro(if_bool)
 
 #endif
 
-#define _NullMsg(fmt, args... )
+#define _NullMsg(fmt, ... )
 
-#define _FatalMsg(fmt, args... )    MACRO( printf("fatal{%s:%s:%i# ", __FILE__, __func__, __LINE__);\
-                                    printf(fmt, ## args);\
+#define _FatalMsg(fmt, ... )    MACRO( printf("fatal{%s:%s:%i# ", __FILE__, __func__, __LINE__);\
+                                    printf(fmt, ##);\
                                     printf(" }fatal;\n"); )
 
-#define _Fatal(fmt, args... ) MACRO( _FatalMsg(fmt, ## args); exit(255) )
+#define _Fatal(fmt, ... ) MACRO( _FatalMsg(fmt, ##); exit(255) )
 
 #endif // DEBUG13_H
